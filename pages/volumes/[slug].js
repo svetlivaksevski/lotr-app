@@ -27,15 +27,6 @@ export default function BookDetail() {
       ? `/volumes/${volumes[prevPageIndex].slug}`
       : null;
 
-  function getRandomVolume(array) {
-    return array[Math.floor(Math.random() * array.length)];
-  }
-
-  const handleRandomVolume = () => {
-    const randomVolume = getRandomVolume(volumes);
-    router.push(`/volumes/${randomVolume.slug}`);
-  };
-
   return (
     <div className="container">
       <Link href="/volumes">All volumes</Link>
@@ -44,7 +35,7 @@ export default function BookDetail() {
       <ul>
         {currentVolume.books.map(({ ordinal, title }) => (
           <li key={title}>
-            {ordinal}, {title}
+            {ordinal}: {title}
           </li>
         ))}
         <Image
@@ -56,9 +47,6 @@ export default function BookDetail() {
       </ul>
       <div>{prevPageUrl && <Link href={prevPageUrl}>Previous value</Link>}</div>
       <div>{nextPageUrl && <Link href={nextPageUrl}>Next value</Link>}</div>
-      <div>
-        <button onClick={handleRandomVolume}>Random volume</button>
-      </div>
     </div>
   );
 }
