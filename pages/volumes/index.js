@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { introduction } from "../../lib/data";
 
-export default function Valumes() {
+export default function Volumes() {
   return (
     <div>
       <h1>Lord of the Rings</h1>
