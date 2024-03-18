@@ -1,11 +1,17 @@
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import { volumes } from "../../lib/data";
 
 export default function BookDetail() {
-  const currentVolume = volumes.find(
-    ({ slug }) => slug === "the-fellowship-of-the-ring"
-  );
+  const router = useRouter();
+  const { slug } = router.query;
+
+  const currentVolume = volumes.find((volume) => volume.slug === slug);
+
+  if (!currentVolume) {
+    return;
+  }
 
   const currentIndex = volumes.indexOf(currentVolume);
 
@@ -21,8 +27,17 @@ export default function BookDetail() {
       ? `/volumes/${volumes[prevPageIndex].slug}`
       : null;
 
+  function getRandomVolume(array) {
+    return array[Math.floor(Math.random() * array.length)];
+  }
+
+  const handleRandomVolume = () => {
+    const randomVolume = getRandomVolume(volumes);
+    router.push(`/volumes/${randomVolume.slug}`);
+  };
+
   return (
-    <>
+    <div className="container">
       <Link href="/volumes">All volumes</Link>
       <h1>{currentVolume.title}</h1>
       <p>{currentVolume.description}</p>
@@ -33,14 +48,17 @@ export default function BookDetail() {
           </li>
         ))}
         <Image
-          src="/../public/images/the-fellowship-of-the-ring.png"
+          src={currentVolume.cover}
           width={140}
           height={230}
-          alt="The fellowship of the ring book"
+          alt={currentVolume.title}
         />
       </ul>
       <div>{prevPageUrl && <Link href={prevPageUrl}>Previous value</Link>}</div>
       <div>{nextPageUrl && <Link href={nextPageUrl}>Next value</Link>}</div>
-    </>
+      <div>
+        <button onClick={handleRandomVolume}>Random volume</button>
+      </div>
+    </div>
   );
 }
