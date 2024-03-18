@@ -3,17 +3,32 @@ import Image from "next/image";
 import { volumes } from "../../lib/data";
 
 export default function BookDetail() {
-  const volume = volumes.find(
+  const currentVolume = volumes.find(
     ({ slug }) => slug === "the-fellowship-of-the-ring"
   );
+
+  const currentIndex = volumes.indexOf(currentVolume);
+
+  const nextPageIndex = currentIndex + 1;
+  const prevPageIndex = currentIndex - 1;
+
+  const nextPageUrl =
+    nextPageIndex >= 0 && nextPageIndex < volumes.length
+      ? `/volumes/${volumes[nextPageIndex].slug}`
+      : null;
+  const prevPageUrl =
+    prevPageIndex >= 0 && prevPageIndex < volumes.length
+      ? `/volumes/${volumes[prevPageIndex].slug}`
+      : null;
+
   return (
     <>
       <Link href="/volumes">All volumes</Link>
-      <h1>{volume.title}</h1>
-      <p>{volume.description}</p>
+      <h1>{currentVolume.title}</h1>
+      <p>{currentVolume.description}</p>
       <ul>
-        {volume.books.map(({ ordinal, title }) => (
-          <li>
+        {currentVolume.books.map(({ ordinal, title }) => (
+          <li key={title}>
             {ordinal}, {title}
           </li>
         ))}
@@ -24,12 +39,8 @@ export default function BookDetail() {
           alt="The fellowship of the ring book"
         />
       </ul>
-      <div>
-        <button href="/">Previous value</button>
-      </div>
-      <div>
-        <button href="/">Next value</button>
-      </div>
+      <div>{prevPageUrl && <Link href={prevPageUrl}>Previous value</Link>}</div>
+      <div>{nextPageUrl && <Link href={nextPageUrl}>Next value</Link>}</div>
     </>
   );
 }
