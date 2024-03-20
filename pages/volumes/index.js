@@ -10,10 +10,6 @@ export default function Volumes() {
     return array[Math.floor(Math.random() * array.length)];
   }
 
-  const handleRandomVolume = () => {
-    const randomVolume = getRandomVolume(volumes);
-    router.push(`/volumes/${randomVolume.slug}`);
-  };
   return (
     <div>
       <h1>Lord of the Rings</h1>
@@ -26,9 +22,6 @@ export default function Volumes() {
           </li>
         ))}
       </ul>
-      <div>
-        <button onClick={handleRandomVolume}>Random volume</button>
-      </div>
     </div>
   );
 }

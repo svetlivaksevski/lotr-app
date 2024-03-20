@@ -2,6 +2,23 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import { volumes } from "../../lib/data";
+import styled from "styled-components";
+
+const StyledVolues = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const StyledBox = styled.div`
+  background-color: ${({ currentVolume }) =>
+    currentVolume?.title ? currentVolume.color : ""};
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+`;
 
 export default function BookDetail() {
   const router = useRouter();
@@ -28,15 +45,16 @@ export default function BookDetail() {
       : null;
 
   return (
-    <div className="container">
+    <StyledVolues>
       <Link href="/volumes">All volumes</Link>
       <h1>{currentVolume.title}</h1>
       <p>{currentVolume.description}</p>
-      <ul>
+
+      <StyledBox currentVolume={currentVolume}>
         {currentVolume.books.map(({ ordinal, title }) => (
-          <li key={title}>
+          <p key={title}>
             {ordinal}: {title}
-          </li>
+          </p>
         ))}
         <Image
           src={currentVolume.cover}
@@ -44,9 +62,10 @@ export default function BookDetail() {
           height={230}
           alt={currentVolume.title}
         />
-      </ul>
+      </StyledBox>
+
       <div>{prevPageUrl && <Link href={prevPageUrl}>Previous value</Link>}</div>
       <div>{nextPageUrl && <Link href={nextPageUrl}>Next value</Link>}</div>
-    </div>
+    </StyledVolues>
   );
 }
